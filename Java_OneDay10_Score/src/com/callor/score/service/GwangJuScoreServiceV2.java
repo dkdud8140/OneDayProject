@@ -190,15 +190,15 @@ public class GwangJuScoreServiceV2 {
 			scoreTotal[4] += vo.getScoreHis();
 			
 			totalSum += vo.getScoreSum();							//모든 학생의 총점의 총점
-			totalAgv += vo.getScoreAvg();							//모든 학생읨 평균의 총점
+			totalAgv += vo.getScoreAvg();							//모든 학생의 평균의 총점
 		}
 		System.out.println("-".repeat(lineLegnth));
 
 		System.out.print("총점\t");
 		System.out.print("\t");
 		
-		for (int i = 0; i < subName.length; i++) {				// 과목별 모든 학생의 점수를 출력
-			System.out.print(scoreTotal[i] + "\t");
+		for (int subScoreTotal : scoreTotal) {				// 과목별 모든 학생의 점수 총점 출력 반복문
+			System.out.print(subScoreTotal + "\t");
 		}
 		
 		System.out.print(totalSum + "\t");
