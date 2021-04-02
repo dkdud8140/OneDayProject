@@ -8,12 +8,12 @@ import com.callor.score.model.GwangJuScoreVO;
 
 public class GwangJuScoreService {
 
-	Scanner scan;
-	List<GwangJuScoreVO> scoreList;
+	protected Scanner scan;
+	protected List<GwangJuScoreVO> scoreList;
 
-	int lineLegnth = 80;
-	String subName[];
-	int subScore[];
+	protected int lineLegnth = 80;
+	protected String subName[];
+	protected int subScore[];
 
 	public GwangJuScoreService() {
 		scan = new Scanner(System.in);
@@ -22,6 +22,52 @@ public class GwangJuScoreService {
 		subScore = new int[5];
 	}
 
+	public void printMenu() {
+		// TODO 메뉴 선택 화면
+
+		while (true) {
+			System.out.println();
+			System.out.println("=".repeat(lineLegnth));
+			System.out.println("빛고을 고등학교 성적처리 프로젝트 2021");
+			System.out.println("-".repeat(lineLegnth));
+			System.out.println("1. 학생별 성적 입력");
+			System.out.println("2. 학생 성적 리스트 출력");
+			System.out.println("QUIT. 업무종료");
+			System.out.println("=".repeat(lineLegnth));
+
+			System.out.print("업무선택 >> ");
+			String menuSelect = scan.nextLine();
+			Integer intMenu;
+
+			if (menuSelect.equals("QUIT")) {
+				System.out.println();
+				System.out.println("업무를 완전히 끝냈습니다.");
+				return;
+			}
+			try {
+				intMenu = Integer.valueOf(menuSelect);
+			} catch (Exception e) {
+				System.out.println();
+				System.out.println("1 혹은 2 혹은 QUIT만 입력할 수 있습니다");
+				continue;
+			}
+
+			if (intMenu == 1) {
+				this.inputScore();
+			} else if (intMenu == 2) {
+				this.printScore();
+			} else {
+				System.out.println();
+				System.out.println("1 혹은 2 혹은 QUIT만 입력할 수 있습니다");
+			}
+
+		}
+
+	}
+
+	
+	
+	
 	public void inputScore() {
 		// TODO 학생 이름 입력
 
@@ -32,7 +78,7 @@ public class GwangJuScoreService {
 			System.out.println("-".repeat(lineLegnth));
 			System.out.print("이름 >> ");
 			String stuName = scan.nextLine(); // 학생 이름 입력
-			if (stuName.equals("QUIT")) { // 업무중단시 메뉴 출력
+			if (stuName.equals("QUIT")) { // 업무중단시 메뉴화면으로 return
 				return;
 			}
 
@@ -55,7 +101,7 @@ public class GwangJuScoreService {
 					try { // 과목 점수에 숫자 외를 입력했을때
 						intScore = Integer.valueOf(strScore);
 					} catch (Exception e) {
-						System.out.println("성적은 숫자만 입력하세요.");
+						System.out.println("성적은 숫자 정수 만 입력하세요.");
 						continue;
 					}
 
@@ -104,69 +150,27 @@ public class GwangJuScoreService {
 
 	}
 
-	public void printMenu() {
-		// TODO 메뉴 선택 화면
-
-		while (true) {
-			System.out.println();
-			System.out.println("=".repeat(lineLegnth));
-			System.out.println("빛고을 고등학교 성적처리 프로젝트 2021");
-			System.out.println("-".repeat(lineLegnth));
-			System.out.println("1. 학생별 성적 입력");
-			System.out.println("2. 학생 성적 리스트 출력");
-			System.out.println("QUIT. 업무종료");
-			System.out.println("=".repeat(lineLegnth));
-
-			System.out.print("업무선택 >> ");
-			String menuSelect = scan.nextLine();
-			Integer intMenu;
-
-			if (menuSelect.equals("QUIT")) {
-				System.out.println();
-				System.out.println("업무를 완전히 끝냈습니다.");
-				return;
-			}
-			try {
-				intMenu = Integer.valueOf(menuSelect);
-			} catch (Exception e) {
-				System.out.println();
-				System.out.println("1 혹은 2 혹은 QUIT만 입력할 수 있습니다");
-				continue;
-			}
-
-			if (intMenu == 1) {
-				this.inputScore();
-			} else if (intMenu == 2) {
-				this.printScore();
-			} else {
-				System.out.println();
-				System.out.println("1 혹은 2 혹은 QUIT만 입력할 수 있습니다");
-			}
-
-		}
-
-	}
 
 	public void printScore() {
 
 		Integer scoreTotal[] = new Integer[subScore.length];
-		for(int i = 0 ; i < scoreTotal.length ; i++) {
+		for (int i = 0; i < scoreTotal.length; i++) {
 			scoreTotal[i] = 0;
 		}
 		Integer totalSum = 0;
 
 		System.out.println();
 		System.out.println("=".repeat(lineLegnth));
-		System.out.println("순번\t이름\t\t국어\t영어\t수학\t과학\t국사\t총점\t평균");
+		System.out.println("순번\t이름\t국어\t영어\t수학\t과학\t국사\t총점\t평균");
 		System.out.println("-".repeat(lineLegnth));
 
 		for (int i = 0; i < scoreList.size(); i++) {
 
 			GwangJuScoreVO vo = new GwangJuScoreVO();
 			vo = scoreList.get(i);
-			
+
 			System.out.print((i + 1) + "\t");
-			System.out.print(vo.getStuName() + "\t\t");
+			System.out.print(vo.getStuName() + "\t");
 			System.out.print(vo.getScoreKor() + "\t");
 			System.out.print(vo.getScoreEng() + "\t");
 			System.out.print(vo.getScoreMath() + "\t");
@@ -184,13 +188,13 @@ public class GwangJuScoreService {
 		System.out.println("-".repeat(lineLegnth));
 
 		System.out.print("총점\t");
-		System.out.print("\t\t");
+		System.out.print("\t");
 		for (int i = 0; i < subName.length; i++) {
 			System.out.print(scoreTotal[i] + "\t");
-			totalSum +=scoreTotal[i];
+			totalSum += scoreTotal[i];
 		}
 		System.out.print(totalSum + "\t");
-		float totalAgv = totalSum / scoreTotal.length;
+		float totalAgv = (float)totalSum / ( scoreTotal.length*scoreList.size() );
 		System.out.printf("%3.2f\n", totalAgv);
 
 		System.out.println("=".repeat(lineLegnth));
