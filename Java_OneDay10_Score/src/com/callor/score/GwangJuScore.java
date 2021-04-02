@@ -1,5 +1,13 @@
 package com.callor.score;
 
-public class GwangJuScore {
+import com.callor.score.service.GwangJuScoreService;
 
+public class GwangJuScore {
+	public static void main(String[] args) {
+		
+		GwangJuScoreService gjsV1 = new GwangJuScoreService();
+		
+		gjsV1.printMenu();
+		
+	}
 }
