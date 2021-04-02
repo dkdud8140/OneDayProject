@@ -50,7 +50,7 @@ public class GwangJuScoreService {
 					System.out.printf("%s >> ", subName[i]);
 					strScore = scan.nextLine();
 					if (strScore.equals("QUIT")) { // 업무중단시 메뉴 출력
-						return ;
+						return;
 					}
 					try { // 과목 점수에 숫자 외를 입력했을때
 						intScore = Integer.valueOf(strScore);
@@ -107,7 +107,6 @@ public class GwangJuScoreService {
 	public void printMenu() {
 		// TODO 메뉴 선택 화면
 
-		
 		while (true) {
 			System.out.println();
 			System.out.println("=".repeat(lineLegnth));
@@ -150,16 +149,22 @@ public class GwangJuScoreService {
 
 	public void printScore() {
 
+		Integer scoreTotal[] = new Integer[subScore.length];
+		for(int i = 0 ; i < scoreTotal.length ; i++) {
+			scoreTotal[i] = 0;
+		}
+		Integer totalSum = 0;
+
 		System.out.println();
 		System.out.println("=".repeat(lineLegnth));
 		System.out.println("순번\t이름\t\t국어\t영어\t수학\t과학\t국사\t총점\t평균");
 		System.out.println("-".repeat(lineLegnth));
 
-		GwangJuScoreVO vo = new GwangJuScoreVO();
 		for (int i = 0; i < scoreList.size(); i++) {
 
+			GwangJuScoreVO vo = new GwangJuScoreVO();
 			vo = scoreList.get(i);
-
+			
 			System.out.print((i + 1) + "\t");
 			System.out.print(vo.getStuName() + "\t\t");
 			System.out.print(vo.getScoreKor() + "\t");
@@ -168,9 +173,25 @@ public class GwangJuScoreService {
 			System.out.print(vo.getScoreSci() + "\t");
 			System.out.print(vo.getScoreHis() + "\t");
 			System.out.print(vo.getScoreSum() + "\t");
-			System.out.println(vo.getScoreAvg());
+			System.out.printf("%3.2f\n", vo.getScoreAvg());
 
+			scoreTotal[0] += vo.getScoreKor();
+			scoreTotal[1] += vo.getScoreEng();
+			scoreTotal[2] += vo.getScoreMath();
+			scoreTotal[3] += vo.getScoreSci();
+			scoreTotal[4] += vo.getScoreHis();
 		}
+		System.out.println("-".repeat(lineLegnth));
+
+		System.out.print("총점\t");
+		System.out.print("\t\t");
+		for (int i = 0; i < subName.length; i++) {
+			System.out.print(scoreTotal[i] + "\t");
+			totalSum +=scoreTotal[i];
+		}
+		System.out.print(totalSum + "\t");
+		float totalAgv = totalSum / scoreTotal.length;
+		System.out.printf("%3.2f\n", totalAgv);
 
 		System.out.println("=".repeat(lineLegnth));
 		return;

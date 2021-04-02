@@ -12,24 +12,30 @@ public class GwangJuScoreVO {
 	private Integer scoreSum ;
 	private Float scoreAvg ;
 	
+	public void setStuName(String stuName) {
+		this.stuName = stuName;
+	}
+	
 	public String getStuName() {
 		return stuName;
 	}
+	
+	
 	public Integer getScoreSum() {
 		return scoreSum;
 	}
 	public void setScoreSum(Integer scoreSum) {
 		this.scoreSum = scoreSum;
 	}
+	
+	
 	public Float getScoreAvg() {
 		return scoreAvg;
 	}
 	public void setScoreAvg(Float scoreAvg) {
 		this.scoreAvg = scoreAvg;
 	}
-	public void setStuName(String stuName) {
-		this.stuName = stuName;
-	}
+
 	
 	
 	public Integer getScoreKor() {
