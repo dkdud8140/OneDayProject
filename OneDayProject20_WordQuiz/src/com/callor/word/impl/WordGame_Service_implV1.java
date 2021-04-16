@@ -107,6 +107,7 @@ public class WordGame_Service_implV1 implements WordGameService {
 			playerName = scan.nextLine();
 
 			playerScore = rS.scoreRead(playerName); 		// ReaderService 클래스의 scoreRead 메소드로 저장된 플레이어의 점수 파일 리로드
+
 			if (playerName.equals("Quit")) {
 				playerName = null ;							// Quit 입력시 플레이어의 이름이 Quit로 저장되는 것을 방지
 				if (playerScore == null) playerScore = 0; 	// 플레이어 정보 찾기 실패시 playerScore가 null 값으로 출력되는 것을 방지
@@ -142,7 +143,7 @@ public class WordGame_Service_implV1 implements WordGameService {
 				System.out.println("-".repeat(lineNum * 2));
 				System.out.println("다음 영단어를 맞추세요.");
 				System.out.println("게임종료시 Quit 입력 ( 단 , 점수가 2점 차감됩니다.)");
-				System.out.println("\n" + rndEng);
+				//System.out.println("\n" + rndEng);
 				System.out.print("\n▶▶▶");
 				System.out.print("[ ");
 				for (int i = 0; i < shEng.length; i++) { // shEng의 크기만큼 스펠링 출력
@@ -177,12 +178,12 @@ public class WordGame_Service_implV1 implements WordGameService {
 
 					Integer wrongA = this.wrongAnswer(nCount); 	// 오답 시 게임진행 방향 선택 메소드
 					if (wrongA == null) return; 				// mainGame으로 돌아가기
+
 					else if (wrongA == 1) {						// 현재문제 재도전
 						nCount -- ;								// 재도전시 재도전횟수 차감
 						continue; 
 					}
-					else if (wrongA == 2)
-						break; 									// 다음문제
+					else if (wrongA == 2) break; 				// 다음문제
 					else if (wrongA == 3) { 					// 힌트 제공
 						System.out.println("Hint : " + rndKor);
 						continue;
@@ -276,12 +277,14 @@ public class WordGame_Service_implV1 implements WordGameService {
 				playerScore -= 2;
 				return 2;
 			} else if (intM == 3) { 				// 힌트 선택시 : 2점 차감 후 3값 리턴
+				
 				if (playerScore <= 0) { 			// 현재 점수가 0이하이면 힌트제공 거부
 					System.out.println("점수가 0점 이하이므로 힌트를 줄 수 없습니다.");
 					continue;
 				}
 				playerScore -= 2;
 				return 3;
+				
 			} else {
 				System.out.println("\n입력은 < 1, 2, 3, Quit > 만 가능합니다.");
 				continue;
@@ -299,10 +302,8 @@ public class WordGame_Service_implV1 implements WordGameService {
 			System.out.println("YES  /  NO");
 			System.out.print(" >> ");
 			String yNo = scan.nextLine();
-			if (yNo.equals("YES"))
-				return 1;
-			else if (yNo.equals("NO"))
-				return 2;
+			if (yNo.equals("YES"))			return 1;
+			else if (yNo.equals("NO")) 		return 2;
 			else {
 				System.out.println("입력은 YES / NO 만 가능합니다");
 				continue;
@@ -323,10 +324,9 @@ public class WordGame_Service_implV1 implements WordGameService {
 				System.out.println("YES  /  NO");
 				System.out.print(" >> ");
 				String selecSave = scan.nextLine();
-				if (selecSave.equals("YES"))			//현재 플레이어의 이름으로 저장하기를 선택시 
-					break;								//따로 플레이어의 이름을 입력받지 않고 현재 이름으로 저장
+				if (selecSave.equals("YES")) break;		//현재 플레이어의 이름으로 저장하기를 선택시 따로 플레이어의 이름을 입력받지 않고 현재 이름으로 저장 
 				else if (selecSave.equals("NO")) {
-					this.saveFile();					//다른 이름으로 저장 원할시 다시 입력 받기
+					this.inputName();					//다른 이름으로 저장 원할시 이름 다시 입력 받기
 					break ;
 				}
 				else {									
@@ -334,12 +334,41 @@ public class WordGame_Service_implV1 implements WordGameService {
 					continue;
 				}
 			}
-		} else {										//현재 진행중인 플레이어의 이름이 없는 경우
-			this.saveFile();							//새로운 이름으로 입력하여 파일 저장
-		}
+		} else this.inputName();							//현재 진행중인 플레이어의 이름이 없는 경우 새로운 이름으로 입력하기
 		
-		//파일 저장 부분
-		String str = "src/com/callor/word/" + playerName + ".txt"; // 플레이어 이름으로 파일 저장
+		if( !(playerName == null) ) {						// 플레이어의 이름이 null이 아닐때만 파일 저장 실행
+			this.savePlayerFile();							//inputName으로 저장된 이름 or 현재 진행중인 플레이어 이름으로 파일 저장
+			System.out.println("저장이 완료되었습니다.");
+		}
+	}
+
+	
+	
+	
+	
+	protected void inputName() {
+		
+		//TODO 저장할 파일(플레이어 이름)입력 메소드	
+		
+		while (true) {
+			System.out.println("\n저장할 플레이어 이름을 입력하세요");
+			System.out.println("단, Quit는 입력 불가. Quit 입력시 저장 취소");
+			System.out.print(">> 입력 : ");
+
+			playerName = scan.nextLine();				
+			if (playerName.equals("Quit")) {		//Quit  입력 불가
+				playerName = null ;					//Quit 입력 시 플레이어이름을 null로 리턴하고 입력 메소드 종료
+				System.out.println("저장을 취소합니다.");
+				return;
+			}
+			break;
+		}
+	}
+	
+	public void savePlayerFile() {				
+		// TODO 플레이어 파일로 저장 메소드
+		
+		String str = "src/com/callor/word/" + playerName + ".txt"; 
 
 		FileWriter fileWriter = null;
 		PrintWriter out = null;
@@ -359,26 +388,10 @@ public class WordGame_Service_implV1 implements WordGameService {
 			e.printStackTrace();
 		}
 
-		System.out.println("저장이 완료되었습니다.");
+		
 
 	}
-
-	protected void saveFile() {
-		
-		//TODO 플레이어 이름 입력 메소드	
-		
-		while (true) {
-			System.out.println("\n저장할 플레이어 이름을 입력하세요");
-			System.out.println("단, Quit는 입력 불가.");
-			System.out.print(">> 입력 : ");
-
-			playerName = scan.nextLine();				
-			if (playerName.equals("Quit")) {								//Quit 입력 불가
-				System.out.println("Quit는 입력불가입니다. 다시 입력하세요.");
-				continue;
-			}
-			break;
-		}
-	}
+	
+	
 
 }
