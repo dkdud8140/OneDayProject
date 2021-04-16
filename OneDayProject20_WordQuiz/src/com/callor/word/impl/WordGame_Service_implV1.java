@@ -31,7 +31,7 @@ public class WordGame_Service_implV1 implements WordGameService {
 
 		wordList = rS.wordRead(); // TODO wordList에 단어 리스트 저장
 
-		playerName = "";
+		playerName = null;
 		playerScore = 0;
 
 	}
@@ -268,6 +268,7 @@ public class WordGame_Service_implV1 implements WordGameService {
 					System.out.println("점수가 0점 이하이므로 힌트를 줄 수 없습니다.");
 					continue;
 				}
+				playerScore -= 2;
 				return 3;
 			} else {
 				System.out.println("\n입력은 < 1, 2, 3, Quit > 만 가능합니다.");
@@ -303,20 +304,31 @@ public class WordGame_Service_implV1 implements WordGameService {
 
 		// TODO 스코어 파일로 저장
 
-		while (true) {
-			System.out.println("\n저장할 플레이어 이름을 입력하세요");
-			System.out.println("단, Quit는 입력 불가.");
-			System.out.print(">> 입력 : ");
+		if (!(playerName == null)) {			// 현재 진행중인 플레이어의 이름이 입력되어 있는 경우
 
-			playerName = scan.nextLine();
-			if (playerName.equals("Quit")) {
-				System.out.println("Quit는 입력불가입니다. 다시 입력하세요.");
-				continue;
+			while (true) {
+				System.out.println("현재이름( "+ playerName + " )으로 파일을 저장하시겠습니까?");
+				System.out.println("YES  /  NO");
+				System.out.print(" >> ");
+				String selecSave = scan.nextLine();
+				if (selecSave.equals("YES"))			//현재 플레이어의 이름으로 저장하기를 선택시 
+					break;								//따로 플레이어의 이름을 입력받지 않고 현재 이름으로 저장
+				else if (selecSave.equals("NO")) {
+					this.saveFile();					//다른 이름으로 저장 원할시 다시 입력 받기
+					break ;
+				}
+				else {									
+					System.out.println("입력은 YES / NO 만 가능합니다");
+					continue;
+				}
 			}
-			break;
+		} else {										//현재 진행중인 플레이어의 이름이 없는 경우
+			this.saveFile();
 		}
 		
-		String str = "src/com/callor/word/" + playerName + ".txt"; 	//입력한 이름으로 파일 저장
+		//파일 저장 부분
+		
+		String str = "src/com/callor/word/" + playerName + ".txt"; // 입력한 이름으로 파일 저장
 
 		FileWriter fileWriter = null;
 		PrintWriter out = null;
@@ -325,7 +337,7 @@ public class WordGame_Service_implV1 implements WordGameService {
 			fileWriter = new FileWriter(str);
 			out = new PrintWriter(fileWriter);
 
-			out.print(playerName);				// txt 파일에 "플레이어명:점수" 형태로 저장
+			out.print(playerName); // txt 파일에 "플레이어명:점수" 형태로 저장
 			out.print(":");
 			out.print(playerScore);
 
@@ -338,6 +350,24 @@ public class WordGame_Service_implV1 implements WordGameService {
 
 		System.out.println("저장이 완료되었습니다.");
 
+	}
+
+	protected void saveFile() {
+		
+		//TODO 플레이어 이름 입력 메소드	
+		
+		while (true) {
+			System.out.println("\n저장할 플레이어 이름을 입력하세요");
+			System.out.println("단, Quit는 입력 불가.");
+			System.out.print(">> 입력 : ");
+
+			playerName = scan.nextLine();
+			if (playerName.equals("Quit")) {
+				System.out.println("Quit는 입력불가입니다. 다시 입력하세요.");
+				continue;
+			}
+			break;
+		}
 	}
 
 }
