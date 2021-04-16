@@ -129,6 +129,8 @@ public class WordGame_Service_implV1 implements WordGameService {
 
 			String shEng[] = this.shuffleWord(rndEng); // 영단어의 스펠링 섞어서 배열에 저장
 
+			int nCount = 3 ;	//재도전 횟수 변수. 새로운 게임이 시작할때마다 3으로 초기화
+			
 			while (true) {
 				System.out.println("\n▶▶▶ 현재점수 : " + playerScore + " ◀◀◀"); // 플레이어의 현재 점수 출력
 				System.out.println("-".repeat(lineNum * 2));
@@ -169,11 +171,13 @@ public class WordGame_Service_implV1 implements WordGameService {
 					System.out.println("점수가 2점 차감됐습니다");
 					playerScore -= 2; // 오답시 2점 차감
 
-					Integer wrongA = this.wrongAnswer(); // 오답 시 게임진행 방향 선택 메소드
+					Integer wrongA = this.wrongAnswer(nCount); // 오답 시 게임진행 방향 선택 메소드
 					if (wrongA == null)
-						return; // mainGame으로 돌아가기
-					else if (wrongA == 1)
-						continue; // 현재문제 재도전
+						return; 				// mainGame으로 돌아가기
+					else if (wrongA == 1) {		// 현재문제 재도전
+						nCount -- ;				// 재도전시 재도전횟수 차감
+						continue; 
+					}
 					else if (wrongA == 2)
 						break; // 다음문제
 					else if (wrongA == 3) { // 힌트 제공
@@ -229,7 +233,7 @@ public class WordGame_Service_implV1 implements WordGameService {
 
 	}
 
-	protected Integer wrongAnswer() {
+	protected Integer wrongAnswer(int num) {
 
 		// TODO 오답입력시 게임 진행 선택 메소드
 
@@ -257,6 +261,11 @@ public class WordGame_Service_implV1 implements WordGameService {
 			}
 
 			if (intM == 1) { // 재도전 시 : 1점 차감 후 1값 리턴
+				System.out.println("남은 재도전 횟수 : " + num );	//재도전 남은 횟수 표시
+				if(num < 1) {										//재도전 횟수 초과시 선택 불가
+					System.out.println("\n재도전 불가");
+					continue ;
+				}
 				playerScore -= 1;
 				return 1;
 
