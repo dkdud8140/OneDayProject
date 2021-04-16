@@ -14,4 +14,6 @@ public interface WordGameService {
 	
 	public void savePlayerFile();						// 플레이어의 이름으로 파일 저장	
 	
+	//public void correctA(String word, String rndEng) ; 							// 정답 맞췄을 경우 
+	//public void incorrectA(String word, String rndEng);							// 오답
 }
