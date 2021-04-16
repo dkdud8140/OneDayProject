@@ -15,14 +15,16 @@ public class WordGame_Service_implV1 implements WordGameService {
 
 	protected Scanner scan;
 
-	protected final int lineNum = 22; // 줄숫자
-	protected ReaderService rS; // 파일 읽어오는 클래스
+	protected final int lineNum = 22; 		// 줄숫자
+	protected ReaderService rS; 			// 파일 읽어오는 클래스
 
-	protected List<WordVO> wordList; // 단어 리스트 저장하는 List
+	protected List<WordVO> wordList; 		// 단어 리스트 저장하는 List
 
-	protected String playerName; // 플레이어의 이름 변수
-	protected Integer playerScore; // 플레이어의 점수 변수
+	protected String playerName; 			// 플레이어의 이름 변수
+	protected Integer playerScore; 			// 플레이어의 점수 변수
 
+	
+	
 	public WordGame_Service_implV1() {
 
 		// TODO 생성자
@@ -36,13 +38,16 @@ public class WordGame_Service_implV1 implements WordGameService {
 
 	}
 
+	
+	
+	
 	@Override
 	public void mainGame() {
 		// TODO 게임 시작 화면
 
 		System.out.println("☆★".repeat(lineNum));
 		System.out.println("괴도 뤼팡이 나타났습니다!");
-		System.out.println("괴도 뤼팡이 훔친 황금이 들어 있는 금고의\n비밀번호를 찾아주세요.");
+		System.out.println("괴도 뤼팡이 훔친 황금이 들어 있는 \n금고의 비밀번호를 찾아주세요.");
 		System.out.println("☆★".repeat(lineNum));
 
 		while (true) {
@@ -72,13 +77,13 @@ public class WordGame_Service_implV1 implements WordGameService {
 			}
 
 			if (intM == 1)
-				this.loadRecord(); // 플레이어 정보 불러오기 메소드
+				this.loadRecord(); 		// 플레이어 정보 불러오기 메소드
 			else if (intM == 2)
-				this.playGame(); // 게임시작 메소드
+				this.playGame(); 		// 게임시작 메소드
 			else if (intM == 3)
-				this.writerRecord(); // 게임 저장하기
+				this.writerRecord(); 	// 게임 저장하기
 			else if (intM == 4)
-				this.resetPlayer(); // 플레이어 정보 초기화
+				this.resetPlayer();		// 플레이어 정보 초기화
 			else {
 				System.out.println("\n입력은 1 혹은 2 혹은 Quit만 가능합니다.");
 				continue;
@@ -94,16 +99,17 @@ public class WordGame_Service_implV1 implements WordGameService {
 		System.out.println("*".repeat(lineNum * 2));
 		System.out.println("\n플레이어의 이름을 입력하세요.");
 		System.out.println("메뉴로 돌아가려면 Quit를 입력하세요.");
-		System.out.println("!WARNING! 진행하던 게임를 저장하지 않고 다른 기록을 불러오면 " + "\n진행하던 게임 기록은 사라집니다.");
+		System.out.println("!WARNING! 진행하던 게임를 저장하지 않고 다른 기록을 불러오면 " 
+								+ "\n진행하던 게임 기록은 사라집니다.");
 
 		while (true) {
 			System.out.println("\n입력 >> ");
 			playerName = scan.nextLine();
 
-			playerScore = rS.scoreRead(playerName); // ReaderService 클래스의 scoreRead 메소드로 저장된 플레이어의 점수 파일 리로드
+			playerScore = rS.scoreRead(playerName); 		// ReaderService 클래스의 scoreRead 메소드로 저장된 플레이어의 점수 파일 리로드
 			if (playerName.equals("Quit")) {
-				if (playerScore == null)
-					playerScore = 0; // 플레이어 정보 찾기 실패시 playerScore가 null 값으로 출력되는 것을 방지
+				playerName = null ;							// Quit 입력시 플레이어의 이름이 Quit로 저장되는 것을 방지
+				if (playerScore == null) playerScore = 0; 	// 플레이어 정보 찾기 실패시 playerScore가 null 값으로 출력되는 것을 방지
 				return;
 			} else if (playerScore == null) {
 				System.out.println("\n" + playerName + "는(은) 등록되지 않은 플레이어입니다.");
@@ -122,10 +128,10 @@ public class WordGame_Service_implV1 implements WordGameService {
 		// TODO 게임 시작
 
 		while (true) {
-			WordVO vo = this.radomWord(); // 로드 했던 단어 리스트에서 랜덤한 단어 추출
+			WordVO vo = this.radomWord(); 		// 로드 했던 단어 리스트에서 랜덤한 단어 추출
 
-			String rndEng = vo.getEng(); // 랜덤으로 추출한 영단어
-			String rndKor = vo.getKor(); // 랜덤으로 추출한 한글뜻
+			String rndEng = vo.getEng(); 		// 랜덤으로 추출한 영단어
+			String rndKor = vo.getKor(); 		// 랜덤으로 추출한 한글뜻
 
 			String shEng[] = this.shuffleWord(rndEng); // 영단어의 스펠링 섞어서 배열에 저장
 
@@ -136,7 +142,7 @@ public class WordGame_Service_implV1 implements WordGameService {
 				System.out.println("-".repeat(lineNum * 2));
 				System.out.println("다음 영단어를 맞추세요.");
 				System.out.println("게임종료시 Quit 입력 ( 단 , 점수가 2점 차감됩니다.)");
-				// System.out.println("\n" + rndEng);
+				System.out.println("\n" + rndEng);
 				System.out.print("\n▶▶▶");
 				System.out.print("[ ");
 				for (int i = 0; i < shEng.length; i++) { // shEng의 크기만큼 스펠링 출력
@@ -148,39 +154,36 @@ public class WordGame_Service_implV1 implements WordGameService {
 				System.out.print(">> 정답입력 : ");
 				String correctWor = scan.nextLine();
 
-				if (correctWor.equals("Quit")) { // mainGame으로 돌아감
-					playerScore -= 2; // 2점 차감
+				if (correctWor.equals("Quit")) { 		// mainGame으로 돌아감
+					playerScore -= 2; 					// 2점 차감
 					return;
 				}
 
-				if (correctWor.equalsIgnoreCase(rndEng)) { // 영소문자 무시하고 정답 체크
+				if (correctWor.equalsIgnoreCase(rndEng)) { 	// 영소문자 무시하고 정답 체크
 					System.out.println("\n정답입니다!!!");
 					System.out.println("◈◇ 점수 10↑↑ ◈◇");
-					playerScore += 10;
+					playerScore += 10;						//플레이어 점수 누적
 
-					Integer goS = this.goStop(); // 게임 진행, 멈춤 선택, 점수차감없음
-					if (goS == 1)
-						break; // YES 진행시 : 다음 문제 출력
-					else if (goS == 2)
-						return; // NO 진행시 : mainGame으로 돌아감
+					Integer goS = this.goStop(); 			// 게임 진행, 멈춤 선택, 점수차감없음
+					if (goS == 1) break; 					// YES 진행시 : 다음 문제 출력
+					else if (goS == 2) return; 				// NO 진행시 : mainGame으로 돌아감
 
 				}
 
 				else if (!correctWor.equals("Quit")) { // 오답시
 					System.out.println("\n오답입니다ㅠㅠ");
 					System.out.println("점수가 2점 차감됐습니다");
-					playerScore -= 2; // 오답시 2점 차감
+					playerScore -= 2; 							// 오답시 2점 차감
 
-					Integer wrongA = this.wrongAnswer(nCount); // 오답 시 게임진행 방향 선택 메소드
-					if (wrongA == null)
-						return; 				// mainGame으로 돌아가기
-					else if (wrongA == 1) {		// 현재문제 재도전
-						nCount -- ;				// 재도전시 재도전횟수 차감
+					Integer wrongA = this.wrongAnswer(nCount); 	// 오답 시 게임진행 방향 선택 메소드
+					if (wrongA == null) return; 				// mainGame으로 돌아가기
+					else if (wrongA == 1) {						// 현재문제 재도전
+						nCount -- ;								// 재도전시 재도전횟수 차감
 						continue; 
 					}
 					else if (wrongA == 2)
-						break; // 다음문제
-					else if (wrongA == 3) { // 힌트 제공
+						break; 									// 다음문제
+					else if (wrongA == 3) { 					// 힌트 제공
 						System.out.println("Hint : " + rndKor);
 						continue;
 					}
@@ -198,13 +201,13 @@ public class WordGame_Service_implV1 implements WordGameService {
 		Random rnd = new Random();
 		int nSize = wordList.size();
 
-		int index = rnd.nextInt(nSize); // 단어리스트에서 랜덤한 단어를 뽑기위한 index값
+		int index = rnd.nextInt(nSize); 		// 단어리스트에서 랜덤한 단어를 뽑기위한 index값
 
 		WordVO vo = wordList.get(index);
-		vo.getEng(); // 랜덤한 영단어
-		vo.getKor(); // 랜덤한 영단어의 한글 뜻
+		vo.getEng(); 		// 랜덤한 영단어
+		vo.getKor(); 		// 랜덤한 영단어의 한글 뜻
 
-		return vo; // 랜덤한 단어 WordVO 형태로 출력
+		return vo; 			// 랜덤한 단어 WordVO 형태로 출력
 	}
 
 	@Override
@@ -227,7 +230,7 @@ public class WordGame_Service_implV1 implements WordGameService {
 	@Override
 	public void resetPlayer() {
 		// TODO 플레이어 리셋
-		playerName = "";
+		playerName = null ;
 		playerScore = 0;
 		return;
 
@@ -260,7 +263,7 @@ public class WordGame_Service_implV1 implements WordGameService {
 				continue;
 			}
 
-			if (intM == 1) { // 재도전 시 : 1점 차감 후 1값 리턴
+			if (intM == 1) {										 // 재도전 시 : 1점 차감 후 1값 리턴
 				System.out.println("남은 재도전 횟수 : " + num );	//재도전 남은 횟수 표시
 				if(num < 1) {										//재도전 횟수 초과시 선택 불가
 					System.out.println("\n재도전 불가");
@@ -269,11 +272,11 @@ public class WordGame_Service_implV1 implements WordGameService {
 				playerScore -= 1;
 				return 1;
 
-			} else if (intM == 2) { // 다음문제 선택 시 : 2점 차감 후 2값 리턴
+			} else if (intM == 2) { 				// 다음문제 선택 시 : 2점 차감 후 2값 리턴
 				playerScore -= 2;
 				return 2;
-			} else if (intM == 3) { // 힌트 선택시 : 2점 차감 후 3값 리턴
-				if (playerScore <= 0) { // 현재 점수가 0이하이면 힌트제공 거부
+			} else if (intM == 3) { 				// 힌트 선택시 : 2점 차감 후 3값 리턴
+				if (playerScore <= 0) { 			// 현재 점수가 0이하이면 힌트제공 거부
 					System.out.println("점수가 0점 이하이므로 힌트를 줄 수 없습니다.");
 					continue;
 				}
@@ -332,12 +335,11 @@ public class WordGame_Service_implV1 implements WordGameService {
 				}
 			}
 		} else {										//현재 진행중인 플레이어의 이름이 없는 경우
-			this.saveFile();
+			this.saveFile();							//새로운 이름으로 입력하여 파일 저장
 		}
 		
 		//파일 저장 부분
-		
-		String str = "src/com/callor/word/" + playerName + ".txt"; // 입력한 이름으로 파일 저장
+		String str = "src/com/callor/word/" + playerName + ".txt"; // 플레이어 이름으로 파일 저장
 
 		FileWriter fileWriter = null;
 		PrintWriter out = null;
@@ -346,7 +348,7 @@ public class WordGame_Service_implV1 implements WordGameService {
 			fileWriter = new FileWriter(str);
 			out = new PrintWriter(fileWriter);
 
-			out.print(playerName); // txt 파일에 "플레이어명:점수" 형태로 저장
+			out.print(playerName); 						// txt 파일에 "플레이어명:점수" 형태로 저장
 			out.print(":");
 			out.print(playerScore);
 
@@ -370,8 +372,8 @@ public class WordGame_Service_implV1 implements WordGameService {
 			System.out.println("단, Quit는 입력 불가.");
 			System.out.print(">> 입력 : ");
 
-			playerName = scan.nextLine();
-			if (playerName.equals("Quit")) {
+			playerName = scan.nextLine();				
+			if (playerName.equals("Quit")) {								//Quit 입력 불가
 				System.out.println("Quit는 입력불가입니다. 다시 입력하세요.");
 				continue;
 			}
